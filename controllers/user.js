@@ -1,14 +1,8 @@
-import { User } from "../models/user.js";
-import bcrypt from "bcryptjs";
-import { validationResult } from "express-validator";
+import User from "../models/user.js";
+import bcrypt from "bcrypt";
 import { generateToken } from "../libs/generateToken.js";
 
 async function createUser(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
     const { email, password } = req.body;
 
     try {
@@ -38,11 +32,6 @@ async function createUser(req, res) {
 }
 
 async function loginUser(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
     const { email, password } = req.body;
 
     try {

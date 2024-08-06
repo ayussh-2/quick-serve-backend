@@ -1,20 +1,14 @@
-const express = require("express");
+import express from "express";
+import { loginUser, createUser } from "../controllers/user.js";
 
 const router = express.Router();
 
-// POST /auth/login
-router.post("/login", (req, res) => {
-    // Implement your login logic here
-});
+router.post("/login", loginUser);
 
-// POST /auth/register
-router.post("/register", (req, res) => {
-    // Implement your registration logic here
-});
+router.post("/register", createUser);
 
-// GET /auth/logout
 router.get("/logout", (req, res) => {
-    // Implement your logout logic here
+    res.status(200).json({ message: "Logout successful" });
 });
 
-module.exports = router;
+export default router;
