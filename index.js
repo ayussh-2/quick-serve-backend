@@ -9,8 +9,7 @@ config();
 
 const app = express();
 app.use(cors());
-// app.use(jsonParser);
-app.use(express.json()); // Directly using express.json() middleware
+app.use(express.json());
 
 const port = process.env.PORT;
 
