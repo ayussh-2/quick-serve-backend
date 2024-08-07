@@ -63,4 +63,11 @@ async function loginUser(req, res) {
     }
 }
 
-export { createUser, loginUser };
+function googleCallback(req, res) {
+    console.log(req.user);
+    res.status(200).json({
+        message: "Login Succesfull",
+        status: "success",
+    });
+}
+export { createUser, loginUser, googleCallback };

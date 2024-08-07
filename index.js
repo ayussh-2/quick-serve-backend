@@ -5,12 +5,17 @@ import { jsonParser } from "./middlewares/jsonparser.js";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import quickserveRoutes from "./routes/quickserve.js";
+import sessionMiddleware from "./middlewares/session.js";
+import initializePassport from "./middlewares/passport.js";
 
 config();
 
 const app = express();
 app.use(cors());
 app.use(jsonParser);
+app.use(sessionMiddleware);
+
+initializePassport(app);
 
 const port = process.env.PORT;
 
