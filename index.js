@@ -4,12 +4,13 @@ import cors from "cors";
 import { jsonParser } from "./middlewares/jsonparser.js";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.js";
+import quickserveRoutes from "./routes/quickserve.js";
 
 config();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(jsonParser);
 
 const port = process.env.PORT;
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/quickserve", quickserveRoutes);
 
 connectDB();
 

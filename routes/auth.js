@@ -7,8 +7,4 @@ router.post("/login", loginUser);
 
 router.post("/register", createUser);
 
-router.get("/logout", (req, res) => {
-    res.status(200).json({ message: "Logout successful" });
-});
-
 export default router;
