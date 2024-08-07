@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js";
 import quickserveRoutes from "./routes/quickserve.js";
 import sessionMiddleware from "./middlewares/session.js";
 import initializePassport from "./middlewares/passport.js";
+import sendEmailRoutes from "./routes/mail.js";
 
 config();
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/quickserve", quickserveRoutes);
+app.use("/api/send-email", sendEmailRoutes);
 
 connectDB();
 
