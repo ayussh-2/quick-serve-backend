@@ -12,7 +12,7 @@ passport.use(
             callbackURL:
                 process.env.GOOGLE_CALLBACK_URL + "/api/auth/callback/google",
         },
-        (profile, done) => {
+        (accessToken, refreshToken, profile, done) => {
             return done(null, profile);
         }
     )

@@ -11,7 +11,7 @@ router.post("/register", createUser);
 router.get(
     "/google",
     passport.authenticate("google", {
-        scope: ["https://www.googleapis.com/auth/plus.login"],
+        scope: ["profile", "email"],
     })
 );
 
