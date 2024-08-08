@@ -2,9 +2,12 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../libs/generateToken.js";
 import { giveError } from "../libs/giveError.js";
+import { generateOTP } from "../libs/genOTP.js";
+import { sendEmail } from "../libs/sendEmail.js";
 
+const otp = generateOTP();
 async function createUser(req, res) {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -15,6 +18,27 @@ async function createUser(req, res) {
             });
         }
 
+        const html = `<h1>Your OTP is ${otp}</h1>`;
+        await sendEmail(email, "OTP for registration", html);
+        return res.status(200).json({
+            message: "OTP sent to your email",
+            status: "success",
+            data: req.body,
+        });
+    } catch (err) {
+        giveError(err, res);
+    }
+}
+
+async function checkOTP(req, res) {
+    try {
+        if (req.body.otp !== otp) {
+            return res.status(400).json({
+                message: "Invalid OTP",
+                status: "error",
+            });
+        }
+        const { password } = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = new User({
@@ -26,8 +50,8 @@ async function createUser(req, res) {
             message: "User created successfully",
             status: "success",
         });
-    } catch (err) {
-        giveError(err, res);
+    } catch (error) {
+        giveError(error, res);
     }
 }
 
@@ -70,4 +94,4 @@ function googleCallback(req, res) {
         status: "success",
     });
 }
-export { createUser, loginUser, googleCallback };
+export { createUser, loginUser, googleCallback, checkOTP };
