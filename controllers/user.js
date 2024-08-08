@@ -4,6 +4,8 @@ import { generateToken } from "../libs/generateToken.js";
 import { giveError } from "../libs/giveError.js";
 import { generateOTP } from "../libs/genOTP.js";
 import { sendEmail } from "../libs/sendEmail.js";
+import { getMailTemplate } from "../extras/mailTemplate.js";
+import { otpTemplate } from "../extras/otpTemplate.js";
 
 const otp = generateOTP();
 async function createUser(req, res) {
@@ -11,6 +13,7 @@ async function createUser(req, res) {
 
     try {
         const existingUser = await User.findOne({ email });
+
         if (existingUser) {
             return res.status(400).json({
                 message: "Email already in use",
@@ -18,8 +21,9 @@ async function createUser(req, res) {
             });
         }
 
-        const html = `<h1>Your OTP is ${otp}</h1>`;
-        await sendEmail(email, "OTP for registration", html);
+        const emailHtml = getMailTemplate(otpTemplate(otp));
+
+        await sendEmail(email, "OTP for registration", emailHtml);
         return res.status(200).json({
             message: "OTP sent to your email",
             status: "success",
